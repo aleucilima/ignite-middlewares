@@ -26,16 +26,12 @@ function checksExistsUserAccount(request, response, next) {
 function checksCreateTodosUserAvailability(request, response, next) {
   const { user } = request
 
-  const userPro = users.find((user) => user.pro === true)
-
-  if(userPro && user.todos.length <= 10) {
-    return response.user = user
+  if(user.pro === false && user.todos.length === 10) {
+    return response.status(403).json({ error: 'Users not allowed'})
   }
-
-  response.status(403).json({ error: 'Users not pro'})
-
-  return next()
-
+  else {
+    return next()
+  }
 }
 
 function checksTodoExists(request, response, next) {
