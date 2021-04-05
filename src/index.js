@@ -15,7 +15,7 @@ function checksExistsUserAccount(request, response, next) {
   const user = users.find((user) => user.username === username)
 
   if(!user) {
-    return response.status(404).json({ error: 'User not found' })
+    return response.status(404).json({ error: 'User not found' });
   }
 
   request.user = user
@@ -25,12 +25,16 @@ function checksExistsUserAccount(request, response, next) {
 
 function checksCreateTodosUserAvailability(request, response, next) {
   const { user } = request
-  
-  const proUser = user.some((proUser) => user.pro === false || user.todos.length > 10)
 
-  if (proUser) {
-    return response.status(403).send()
+  const userPro = users.find((user) => user.pro === true)
+
+  if(userPro && user.todos.length <= 10) {
+    return response.user = user
   }
+
+  response.status(403).json({ error: 'Users not pro'})
+
+  return next()
 
 }
 
